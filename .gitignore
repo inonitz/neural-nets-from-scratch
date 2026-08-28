@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+venv/
+.venv/
+.idea/
+*.pickle
+samples/
+data_batch_*
