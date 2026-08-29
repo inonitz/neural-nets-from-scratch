@@ -145,6 +145,12 @@ cd cnn && python "Neural Net.py"
 - Datasets and weight pickles are not committed (`.gitignore`d) - `get_mnist.py` fetches the data and
   training regenerates the weights.
 
+## Learning Resources
+
+The references I actually used to derive backprop, the softmax/cross-entropy gradients, weight
+initialization, and evaluation - the original 2019 bookmarks - are collected in
+[RESOURCES.md](RESOURCES.md).
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
