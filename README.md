@@ -31,10 +31,10 @@ flagship) → an unfinished **CNN**.
 ### MNIST digit classifier
 
 A from-scratch mini-batch-gradient-descent MLP (`784 → 100 → 100 → 10`), trained on 50k digits and
-evaluated on 10k it never saw. Running the trainer today reaches **roughly 90-91% test accuracy** in
-a single pass - it varies a little run-to-run with the random initialization (the figure below shows
-a 91.4% run; the hyperparameter log in the trainer reached ~97.4% with resumed/multi-iteration
-training).
+evaluated on 10k it never saw. A single pass over the data reaches **~90-91%**; the default `--train`
+(10 passes) climbs into the **mid-90s**, and the hyperparameter log in the trainer reached ~97.4% with
+longer training. Accuracy varies a little run-to-run with the random initialization. The figure below
+shows a representative single-pass run (regenerate it from your own network with `make_figures.py`):
 
 ![Training loss and test accuracy](assets/training_curves.png)
 
@@ -94,17 +94,26 @@ python boop.py
 python xor_bias_added.py
 ```
 
-**Digit classifier** (the flagship):
+**Digit classifier** (the flagship) - a small CLI, `python train_classifierMBGD.py --help` explains
+the dataset, batching, and every option:
 
 ```
 cd digit-classifier
-python train_classifierMBGD.py  # downloads MNIST on first run, trains, then evaluates
+python train_classifierMBGD.py --train        # train a new network from scratch, then evaluate
+python train_classifierMBGD.py                # later: just load NN.pickle and evaluate (no retrain)
+python train_classifierMBGD.py --resume --iterations 5   # train the saved network further
 ```
 
-The trainer fetches MNIST automatically on first run (~11MB into `samples/`); you can also pre-fetch
-it with `python get_mnist.py`. With no `NN.pickle` present it trains from scratch (125 epochs, a few
-minutes on CPU), exports the weights, and evaluates - printing per-digit predictions and the final
-accuracy. Subsequent runs load `NN.pickle` and only evaluate.
+MNIST is fetched automatically on the first run (~11MB into `samples/`; or pre-fetch with
+`python get_mnist.py`). `--train` builds a fresh `784 -> 100 -> 100 -> 10` network, trains for
+`--iterations` full passes over the 50k images, saves `NN.pickle`, and evaluates on the 10k test set.
+Running with no flag never retrains - it only evaluates the saved network. Key options:
+
+- `--iterations N` - full passes over the data (default 10); more = lower loss, longer runtime
+- `--lr RATE` - learning rate (default 0.1). Higher trains faster but oscillates - the original 1.0
+  reaches ~97% yet bounces a lot; 0.1 is slower and much smoother
+- `--batch-size N` - images per mini-batch (default 400 -> 125 batches per pass)
+- `--arch ...` - layer sizes (default `784 100 100 10`)
 
 **Regenerate the figures** (after training, with MNIST downloaded):
 
