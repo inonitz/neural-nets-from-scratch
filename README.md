@@ -98,13 +98,13 @@ python xor_bias_added.py
 
 ```
 cd digit-classifier
-python get_mnist.py             # downloads MNIST (~11MB) into samples/
-python train_classifierMBGD.py  # trains from scratch, then evaluates on the 10k test set
+python train_classifierMBGD.py  # downloads MNIST on first run, trains, then evaluates
 ```
 
-With no `NN.pickle` present it trains from scratch (125 epochs, a few minutes on CPU), exports the
-weights, and evaluates - printing per-digit predictions and the final accuracy. Subsequent runs load
-`NN.pickle` and only evaluate.
+The trainer fetches MNIST automatically on first run (~11MB into `samples/`); you can also pre-fetch
+it with `python get_mnist.py`. With no `NN.pickle` present it trains from scratch (125 epochs, a few
+minutes on CPU), exports the weights, and evaluates - printing per-digit predictions and the final
+accuracy. Subsequent runs load `NN.pickle` and only evaluate.
 
 **Regenerate the figures** (after training, with MNIST downloaded):
 

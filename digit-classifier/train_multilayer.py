@@ -2,7 +2,9 @@ from mnist.loader import MNIST
 import numpy as np
 from multilayer import Network
 from Classifier_minibatchGD import normalize
+from get_mnist import ensure_mnist
 
+ensure_mnist("samples")   # download MNIST on first run if it isn't here yet
 mndata = MNIST("samples", gz=True)
 training_imgs, training_lbls = mndata.load_training()
 training_imgs, training_lbls = normalize(training_imgs),\

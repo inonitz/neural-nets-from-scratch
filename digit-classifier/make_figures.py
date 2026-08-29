@@ -7,6 +7,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from mnist.loader import MNIST
 from Classifier_minibatchGD import classifier, normalize
+from get_mnist import ensure_mnist
 
 ASSETS = os.path.join(os.path.dirname(__file__), "..", "assets")
 os.makedirs(ASSETS, exist_ok=True)
@@ -14,6 +15,7 @@ os.makedirs(ASSETS, exist_ok=True)
 net = classifier()
 net.import_nn("NN.pickle")
 
+ensure_mnist("samples")
 mndata = MNIST("samples", gz=True)
 test_imgs, test_lbls = mndata.load_testing()
 X = normalize(test_imgs)

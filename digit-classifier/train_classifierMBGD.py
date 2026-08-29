@@ -4,8 +4,10 @@ from mnist.loader import MNIST
 import numpy as np
 from Classifier_minibatchGD import classifier
 from Classifier_minibatchGD import normalize
+from get_mnist import ensure_mnist
 
 
+ensure_mnist("samples")   # download MNIST on first run if it isn't here yet
 mndata = MNIST("samples", gz=True)
 ftraining_images, ftraining_labels = mndata.load_training()
 testing_imgs, testing_lbls = mndata.load_testing()
