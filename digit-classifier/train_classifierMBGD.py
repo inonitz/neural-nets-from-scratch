@@ -1,8 +1,10 @@
 import os
+import matplotlib
 from mnist.loader import MNIST
 import numpy as np
 from Classifier_minibatchGD import classifier
 from Classifier_minibatchGD import normalize
+
 
 mndata = MNIST("samples", gz=True)
 ftraining_images, ftraining_labels = mndata.load_training()
@@ -35,11 +37,21 @@ else:
 # a.fit(training_images, training_labels, 400, 125, iterations=4)
 # a.fit(training_images, training_labels, batchsize=400, epochs=125)
 
-# a.plot_loss()
+# Plot windows only make sense on an interactive backend; a headless run skips them
+# (avoiding matplotlib's "FigureCanvasAgg is non-interactive" warning) -- use
+# make_figures.py to render the figures to files instead.
+_interactive = matplotlib.get_backend().lower() not in ("agg", "pdf", "ps", "svg", "template")
+
+if _interactive:
+    a.plot_loss()
 
 # a.test(validation_images, validation_labels, epochs=10000, testing_method="validation", show_activations=True)
 a.test(testing_imgs, testing_lbls, epochs=10000, testing_method="testing", show_activations=False)
-a.plot_accuracy()
+
+if _interactive:
+    a.plot_accuracy()
+else:
+    print("(non-interactive matplotlib backend -- skipping plot windows; run make_figures.py to save them)")
 print("\n\n\n\n\n")
 
 """

@@ -11,6 +11,8 @@
   </p>
 </div>
 
+**Status: Running & working.** Pure Python, no build step (verified on Python 3.12).
+
 > **Archive notice:** This is a high-school-era learning archive. The code is preserved as it was
 > written, warts included; a few surgical fixes were applied at publication time (2026) so the
 > flagship scripts run on modern Python/numpy - each is marked with an `archive fix (2026)` comment.
@@ -29,8 +31,10 @@ flagship) → an unfinished **CNN**.
 ### MNIST digit classifier
 
 A from-scratch mini-batch-gradient-descent MLP (`784 → 100 → 100 → 10`), trained on 50k digits and
-evaluated on 10k it never saw. Running the trainer today reaches **91.4% test accuracy** in a single
-pass (the hyperparameter log in the trainer reached ~97.4% with resumed/multi-iteration training).
+evaluated on 10k it never saw. Running the trainer today reaches **roughly 90-91% test accuracy** in
+a single pass - it varies a little run-to-run with the random initialization (the figure below shows
+a 91.4% run; the hyperparameter log in the trainer reached ~97.4% with resumed/multi-iteration
+training).
 
 ![Training loss and test accuracy](assets/training_curves.png)
 
@@ -117,6 +121,10 @@ cd cnn && python "Neural Net.py"
 
 ## Notes & Known Limitations
 
+- Test accuracy varies by ~1% between runs (random init, single training pass); ~90-91% is normal.
+- The trainer ends by opening two matplotlib plot windows (loss, then accuracy). On a headless /
+  non-interactive backend it skips them and says so instead of emitting matplotlib's
+  `FigureCanvasAgg is non-interactive` warning - use `make_figures.py` to render the figures to files.
 - The XOR net is a 2-hidden-unit net trained by cycling the four samples in order; it's sensitive to
   initialization and can land in a local minimum. `make_figure.py` seeds a run that converges cleanly.
 - `xor/XOR.py`'s driver code calls a method that doesn't exist in that file; those driver lines are
